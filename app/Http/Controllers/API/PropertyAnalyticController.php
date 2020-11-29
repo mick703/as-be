@@ -43,6 +43,15 @@ class PropertyAnalyticController extends Controller
 
     }
 
+    public function showByProperty(Request $request) {
+        $propertyId = $request->route('property_id');
+        $result = PropertyAnalytic::where([
+            'property_id' => $propertyId
+        ])->get();
+        return $result;
+
+    }
+
     /**
      * Display the specified resource.
      *
@@ -80,7 +89,7 @@ class PropertyAnalyticController extends Controller
             return $analytic;
 
         } catch (ModelNotFoundException $e) {
-            return response()->json($e->getMessage(), 404);
+            return response()->json(['error' => $e->getMessage()], 404);
         }
 
 

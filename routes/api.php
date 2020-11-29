@@ -20,6 +20,6 @@ $CURRENT_VERSION = '2020-11';
 Route::get("/$CURRENT_VERSION/properties", [PropertyController::class, 'index']);
 Route::post("/$CURRENT_VERSION/properties", [PropertyController::class, 'store']);
 Route::get("/$CURRENT_VERSION/properties/{property}", [PropertyController::class, 'show']);
-Route::get("/$CURRENT_VERSION/properties/{property_id}/analytics", [PropertyController::class, 'showByProperty']);
+Route::get("/$CURRENT_VERSION/properties/{property_id}/analytics", [PropertyAnalyticController::class, 'showByProperty']);
 Route::post("/$CURRENT_VERSION/properties/{property_id}/analytics", [PropertyAnalyticController::class, 'store']);
 Route::put("/$CURRENT_VERSION/properties/{property_id}/analytics/{id}", [PropertyAnalyticController::class, 'update']);
