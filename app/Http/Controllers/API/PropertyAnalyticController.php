@@ -50,7 +50,7 @@ class PropertyAnalyticController extends Controller
         $propertyId = $request->route('property_id');
         $result = PropertyAnalytic::where([
             'property_id' => $propertyId
-        ])->get();
+        ])->paginate(15);
         return $result;
 
     }
