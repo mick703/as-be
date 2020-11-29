@@ -13,8 +13,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-//        DB::table('analytic_types')->insert([
-//
-//        ]);
+        $propertySeeder = new PropertySeeder();
+        $analyticTypeSeeder = new AnalyticTypeSeeder();
+        $propertyAnalyticSeeder = new PropertyAnalyticsSeeder();
+
+        $propertySeeder->run();
+        $analyticTypeSeeder->run();
+        $propertyAnalyticSeeder->run();
     }
 }

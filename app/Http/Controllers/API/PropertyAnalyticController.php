@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\PropertyAnalytic;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use DB;
+
 class PropertyAnalyticController extends Controller
 {
     /**
@@ -43,7 +45,8 @@ class PropertyAnalyticController extends Controller
 
     }
 
-    public function showByProperty(Request $request) {
+    public function showByProperty(Request $request)
+    {
         $propertyId = $request->route('property_id');
         $result = PropertyAnalytic::where([
             'property_id' => $propertyId
@@ -114,6 +117,46 @@ class PropertyAnalyticController extends Controller
     public function destroy(PropertyAnalytic $propertyAnalytic)
     {
         //
+    }
+
+    public function summary(Request $request)
+    {
+        $analytics = DB::table('properties')
+            ->select(['value', 'properties.id', 'property_id'])
+            ->leftJoin('property_analytics', 'properties.id', '=', 'property_analytics.property_id');
+
+        $suburb = $request->query('suburb');
+        $state = $request->query('state');
+        $country = $request->query('country');
+        if (!empty($suburb)) {
+            $analytics->where('suburb', '=', $suburb);
+        }
+        if (!empty($state)) {
+            $analytics->where('state', '=', $state);
+        }
+        if (!empty($country)) {
+            $analytics->where('country', '=', $country);
+        }
+
+        $collection = $analytics->get();
+        $median = $collection->median('value');
+        $max = $collection->max('value');
+        $min = $collection->min('value');
+
+        $propertyTotal = $collection->unique('id')->count();
+        $propertyNullValueTotal = $collection->unique('id')->filter(function($item){
+            return ($item->value === null);
+        })->count();
+
+        return response()->json([
+            'min' => +$min,
+            'max' => +$max,
+            'median' => +$median,
+            'properties_with_value_percentage' => (1-$propertyNullValueTotal/$propertyTotal) * 100,
+            'properties_without_value_percentage' => ($propertyNullValueTotal/$propertyTotal) * 100,
+        ]);
+
+
     }
 
 

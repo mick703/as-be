@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\PropertyController;
 use App\Http\Controllers\API\PropertyAnalyticController;
@@ -23,3 +22,7 @@ Route::get("/$CURRENT_VERSION/properties/{property}", [PropertyController::class
 Route::get("/$CURRENT_VERSION/properties/{property_id}/analytics", [PropertyAnalyticController::class, 'showByProperty']);
 Route::post("/$CURRENT_VERSION/properties/{property_id}/analytics", [PropertyAnalyticController::class, 'store']);
 Route::put("/$CURRENT_VERSION/properties/{property_id}/analytics/{id}", [PropertyAnalyticController::class, 'update']);
+
+Route::get("/$CURRENT_VERSION/analytics/summary", [PropertyAnalyticController::class, 'summary']);
+
+
