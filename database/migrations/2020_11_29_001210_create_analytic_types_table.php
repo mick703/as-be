@@ -14,7 +14,7 @@ class CreateAnalyticTypesTable extends Migration
     public function up()
     {
         Schema::create('analytic_types', function (Blueprint $table) {
-            $table->id();
+            $table->id()->autoIncrement();
             $table->timestamps();
             $table->string('name');
             $table->string('units');
